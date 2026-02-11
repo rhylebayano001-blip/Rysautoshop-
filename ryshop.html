@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ry’s Auto Shop</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+    scroll-behavior:smooth;
+}
+
+body{
+    background:linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url('https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1600&q=80');
+    background-size:cover;
+    background-attachment:fixed;
+    background-position:center;
+    color:white;
+}
+
+/* HEADER */
+header{
+    background:#000;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+}
+
+.logo-box{
+    width:40px;
+    height:40px;
+    background:#ff3c00;
+    margin-right:10px;
+    position:relative;
+    border-radius:6px;
+}
+
+.logo-box:before{
+    content:"";
+    position:absolute;
+    width:20px;
+    height:20px;
+    border:3px solid white;
+    border-radius:50%;
+    top:8px;
+    left:8px;
+}
+
+.logo h1{
+    font-size:22px;
+    color:#ff3c00;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin-left:25px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    color:#ff3c00;
+}
+
+/* HERO */
+.hero{
+    height:90vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    animation:fadeIn 2s ease-in;
+}
+
+.hero h2{
+    font-size:50px;
+}
+
+.hero p{
+    margin:20px 0;
+    font-size:18px;
+}
+
+.btn{
+    padding:12px 25px;
+    background:#ff3c00;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.btn:hover{
+    background:#cc2f00;
+}
+
+/* SEARCH */
+.search-container{
+    text-align:center;
+    margin:40px;
+}
+
+.search-container input{
+    padding:10px;
+    width:300px;
+    border-radius:5px;
+    border:none;
+}
+
+/* SERVICES */
+.services{
+    padding:60px 40px;
+    background:rgba(0,0,0,0.9);
+}
+
+.service-grid{
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+    justify-content:center;
+}
+
+.card{
+    background:#111;
+    padding:20px;
+    width:250px;
+    border-radius:10px;
+    transition:transform 0.3s;
+}
+
+.card:hover{
+    transform:scale(1.05);
+}
+
+.card h3{
+    color:#ff3c00;
+}
+
+.price{
+    margin-top:10px;
+    font-weight:bold;
+    color:#00ffcc;
+}
+
+/* BOOKING */
+.booking{
+    padding:60px 40px;
+    background:#000;
+}
+
+form{
+    max-width:500px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+}
+
+form input, form select{
+    padding:10px;
+    margin:10px 0;
+    border-radius:5px;
+    border:none;
+}
+
+/* ABOUT & CONTACT */
+.section{
+    padding:60px 40px;
+    background:rgba(0,0,0,0.85);
+    text-align:center;
+}
+
+/* FOOTER */
+footer{
+    background:#000;
+    padding:20px;
+    text-align:center;
+}
+
+/* ANIMATION */
+@keyframes fadeIn{
+    from{opacity:0;}
+    to{opacity:1;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <div class="logo-box"></div>
+        <h1>Ry’s Auto Shop</h1>
+    </div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div>
+        <h2>Professional Automotive Services</h2>
+        <p>Quality repair and maintenance in Cebu City</p>
+        <a href="#booking"><button class="btn">Book Now</button></a>
+    </div>
+</section>
+
+<div class="search-container">
+    <input type="text" id="searchInput" onkeyup="searchService()" placeholder="Search for services...">
+</div>
+
+<section class="services" id="services">
+    <h2 style="text-align:center; margin-bottom:30px;">Our Services</h2>
+    <div class="service-grid" id="serviceList">
+
+        <div class="card">
+            <h3>Engine Repair</h3>
+            <p>Full engine diagnostics and repair.</p>
+            <div class="price">₱5,000</div>
+        </div>
+
+        <div class="card">
+            <h3>Oil Change</h3>
+            <p>Premium oil replacement service.</p>
+            <div class="price">₱1,500</div>
+        </div>
+
+        <div class="card">
+            <h3>Brake Replacement</h3>
+            <p>Brake pad and system replacement.</p>
+            <div class="price">₱3,000</div>
+        </div>
+
+        <div class="card">
+            <h3>Tire Replacement</h3>
+            <p>New tire installation and balancing.</p>
+            <div class="price">₱4,000</div>
+        </div>
+
+        <div class="card">
+            <h3>Car Tune-Up</h3>
+            <p>Complete vehicle performance check.</p>
+            <div class="price">₱2,500</div>
+        </div>
+
+    </div>
+</section>
+
+<section class="section" id="about">
+    <h2>About Us</h2>
+    <p>Ry’s Auto Shop provides reliable and affordable automotive services in Cebu City.</p>
+
+    <div style="margin-top:40px; display:flex; flex-wrap:wrap; gap:30px; justify-content:center;">
+
+        <div style="background:#111; padding:25px; width:300px; border-radius:10px; transition:0.3s;">
+            <h3 style="color:#ff3c00; margin-bottom:15px;">Our Vision</h3>
+            <p>
+                To become one of Cebu City's most trusted and customer-focused automotive service providers,
+                known for quality workmanship, integrity, and excellence.
+            </p>
+        </div>
+
+        <div style="background:#111; padding:25px; width:300px; border-radius:10px; transition:0.3s;">
+            <h3 style="color:#ff3c00; margin-bottom:15px;">Our Mission</h3>
+            <p>
+                To deliver high-quality automotive repair and maintenance services at affordable prices,
+                ensuring customer safety, satisfaction, and long-term vehicle performance.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="booking" id="booking">
+    <h2 style="text-align:center;">Book an Appointment</h2>
+    <form>
+        <input type="text" placeholder="Full Name" required>
+        <input type="tel" placeholder="Mobile Number" required>
+        <select required>
+            <option value="">Select Service</option>
+            <option>Engine Repair</option>
+            <option>Oil Change</option>
+            <option>Brake Replacement</option>
+            <option>Tire Replacement</option>
+            <option>Car Tune-Up</option>
+        </select>
+        <input type="date" required>
+        <input type="time" required>
+        <button class="btn">Submit Booking</button>
+    </form>
+</section>
+
+<section class="section" id="about">
+    <h2>About Us</h2>
+    <p>Ry’s Auto Shop provides reliable and affordable automotive services in Cebu City.</p>
+</section>
+
+<section class="section" id="contact">
+    <h2>Contact Us</h2>
+    <p>📍 128 San Roque Street, Hipodromo, Cebu City</p>
+    <p>📞 09682824032</p>
+
+    <iframe 
+    src="https://www.google.com/maps?q=Hipodromo,Cebu City&output=embed"
+    width="100%" height="300" style="border:0; margin-top:20px;" allowfullscreen="">
+    </iframe>
+</section>
+
+<footer>
+    <p>© 2026 Ry’s Auto Shop | All Rights Reserved</p>
+</footer>
+
+<script>
+function searchService(){
+    let input = document.getElementById("searchInput").value.toLowerCase();
+    let cards = document.getElementsByClassName("card");
+
+    for(let i=0; i<cards.length; i++){
+        let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
+        if(title.includes(input)){
+            cards[i].style.display = "block";
+        } else{
+            cards[i].style.display = "none";
+        }
+    }
+}
+</script>
+
+</body>
+</html>
