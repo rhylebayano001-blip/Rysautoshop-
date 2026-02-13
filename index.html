@@ -24,13 +24,12 @@ form{max-width:600px; margin:auto; display:flex; flex-direction:column;}
 form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:none;}
 #priceDisplay{margin-top:10px; font-weight:bold; color:#00ffcc;}
 #receipt{display:none; max-width:600px; margin:20px auto; background:#111; padding:20px; border-radius:10px; box-shadow:0 0 10px #ff3c00;}
-#currentBooking{display:none; max-width:600px; margin:20px auto; background:#222; padding:20px; border-radius:10px;}
-#currentBooking h3{color:#ff3c00; text-align:center;}
-/* QR Modal */
 #qrModal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:2000;}
 #qrModal div{background:#111; padding:30px; border-radius:10px; text-align:center; max-width:400px;}
 #qrModal img{margin:20px 0;}
 #countdown{color:#00ffcc; font-weight:bold;}
+.section h2{color:#ff3c00; margin-bottom:15px;}
+.section p{margin-bottom:20px;}
 </style>
 </head>
 <body>
@@ -44,8 +43,8 @@ form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:n
         <a href="#home">Home</a>
         <a href="#services">Services</a>
         <a href="#about">About</a>
+        <a href="#booking">Book</a>
         <a href="#contact">Contact</a>
-        <a href="owner.html">Owner Page</a>
     </nav>
 </header>
 
@@ -79,14 +78,12 @@ form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:n
                 <option value="Semi-Synthetic">Semi-Synthetic</option>
                 <option value="Regular">Regular</option>
             </select>
-
             <select id="fuelType">
                 <option value="">Select Fuel Type</option>
                 <option value="Gasoline">Gasoline</option>
                 <option value="Diesel">Diesel</option>
             </select>
-
-            <select id="carType">
+            <select id="carTypeOil">
                 <option value="">Select Car Type</option>
                 <option value="Sedan">Sedan</option>
                 <option value="SUV">SUV</option>
@@ -95,6 +92,16 @@ form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:n
                 <option value="Truck">Truck</option>
             </select>
         </div>
+
+        <!-- Car Type for other services -->
+        <select id="carTypeOther" style="display:none;">
+            <option value="">Select Car Type</option>
+            <option value="Sedan">Sedan</option>
+            <option value="SUV">SUV</option>
+            <option value="Pickup">Pickup</option>
+            <option value="Van">Van</option>
+            <option value="Truck">Truck</option>
+        </select>
 
         <input type="date" id="date" required>
         <input type="time" id="time" required>
@@ -113,12 +120,6 @@ form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:n
 
         <button type="submit" class="btn">Submit Booking</button>
     </form>
-
-    <!-- Current Booking -->
-    <div id="currentBooking">
-        <h3>Your Current Booking</h3>
-        <div id="currentBookingContent" style="color:white; line-height:1.6;"></div>
-    </div>
 </section>
 
 <!-- Receipt -->
@@ -145,28 +146,43 @@ form input, form select{padding:10px; margin:10px 0; border-radius:5px; border:n
     <p>📞 09682824032</p>
 </section>
 
+<!-- Map Section -->
+<section class="section" id="location" style="padding:40px; text-align:center;">
+    <h2>Our Location</h2>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3858.789753268854!2d123.8859473153112!3d10.31219629260162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9981c4a65a9d5%3A0x9871ff6a5e20f0f5!2s128%20San%20Roque%20St%2C%20Hipodromo%2C%20Cebu%20City%2C%20Cebu%2C%20Philippines!5e0!3m2!1sen!2sus!4v1670000000000!5m2!1sen!2sus"
+        width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+</section>
+
 <footer>
     <p>© 2026 Ry’s Auto Shop | All Rights Reserved</p>
 </footer>
 
 <script>
-// Price data
-const oilPrices = {
-    "Full Synthetic": {"Gasoline": {"Sedan":1500,"SUV":1800,"Pickup":2000,"Van":2200,"Truck":2500},
-                       "Diesel": {"Sedan":1600,"SUV":1900,"Pickup":2100,"Van":2300,"Truck":2600}},
-    "Semi-Synthetic": {"Gasoline": {"Sedan":1200,"SUV":1500,"Pickup":1700,"Van":1900,"Truck":2100},
-                       "Diesel": {"Sedan":1300,"SUV":1600,"Pickup":1800,"Van":2000,"Truck":2200}},
-    "Regular": {"Gasoline": {"Sedan":900,"SUV":1200,"Pickup":1400,"Van":1600,"Truck":1800},
-                "Diesel": {"Sedan":1000,"SUV":1300,"Pickup":1500,"Van":1700,"Truck":1900}}
+// Price data with different prices for all services per car type
+const servicePrices = {
+    "Engine Repair": {"Sedan":5000,"SUV":6000,"Pickup":6500,"Van":7000,"Truck":8000},
+    "Brake Replacement": {"Sedan":3000,"SUV":3500,"Pickup":4000,"Van":4500,"Truck":5000},
+    "Tire Replacement": {"Sedan":4000,"SUV":4500,"Pickup":5000,"Van":5500,"Truck":6000},
+    "Car Tune-Up": {"Sedan":2500,"SUV":3000,"Pickup":3500,"Van":4000,"Truck":4500},
+    "Oil Change": {
+        "Full Synthetic": {"Gasoline": {"Sedan":1500,"SUV":1800,"Pickup":2000,"Van":2200,"Truck":2500},
+                           "Diesel": {"Sedan":1600,"SUV":1900,"Pickup":2100,"Van":2300,"Truck":2600}},
+        "Semi-Synthetic": {"Gasoline": {"Sedan":1200,"SUV":1500,"Pickup":1700,"Van":1900,"Truck":2100},
+                           "Diesel": {"Sedan":1300,"SUV":1600,"Pickup":1800,"Van":2000,"Truck":2200}},
+        "Regular": {"Gasoline": {"Sedan":900,"SUV":1200,"Pickup":1400,"Van":1600,"Truck":1800},
+                    "Diesel": {"Sedan":1000,"SUV":1300,"Pickup":1500,"Van":1700,"Truck":1900}}
+    }
 };
-const otherPrices = {"Engine Repair":5000,"Brake Replacement":3000,"Tire Replacement":4000,"Car Tune-Up":2500};
 
-// Elements
+// DOM elements
 const serviceSelect = document.getElementById('service');
 const oilOptions = document.getElementById('oilOptions');
 const oilType = document.getElementById('oilType');
 const fuelType = document.getElementById('fuelType');
-const carType = document.getElementById('carType');
+const carTypeOil = document.getElementById('carTypeOil');
+const carTypeOther = document.getElementById('carTypeOther');
 const priceDisplay = document.getElementById('priceDisplay');
 const paymentType = document.getElementById('paymentType');
 const paymentMethod = document.getElementById('paymentMethod');
@@ -175,9 +191,6 @@ const bookingForm = document.getElementById('bookingForm');
 const qrModal = document.getElementById('qrModal');
 const receipt = document.getElementById('receipt');
 const receiptContent = document.getElementById('receiptContent');
-
-const currentBookingDiv = document.getElementById('currentBooking');
-const currentBookingContent = document.getElementById('currentBookingContent');
 
 let paymentTimer;
 let timeLeft;
@@ -188,61 +201,42 @@ function updatePrice(){
     let service = serviceSelect.value;
     let price = 0;
     if(service === 'Oil Change'){
-        if(oilType.value && fuelType.value && carType.value){
-            price = oilPrices[oilType.value][fuelType.value][carType.value];
-        } else {
-            priceDisplay.innerHTML = 'Please select oil, fuel, and car type';
-            return;
+        if(oilType.value && fuelType.value && carTypeOil.value){
+            price = servicePrices["Oil Change"][oilType.value][fuelType.value][carTypeOil.value];
         }
-    } else if(service){
-        price = otherPrices[service];
+    } else if(service && carTypeOther.value){
+        price = servicePrices[service][carTypeOther.value];
     }
     priceDisplay.innerHTML = price ? `Total Price: ₱${price}` : '';
 }
 
-// Show current booking
-function showCurrentBooking(booking) {
-    currentBookingContent.innerHTML = `
-        <p><strong>Name:</strong> ${booking.name}</p>
-        <p><strong>Mobile:</strong> ${booking.mobile}</p>
-        <p><strong>Service:</strong> ${booking.service}</p>
-        ${booking.oilType ? `<p><strong>Oil Type:</strong> ${booking.oilType}</p>` : ''}
-        ${booking.fuelType ? `<p><strong>Fuel Type:</strong> ${booking.fuelType}</p>` : ''}
-        ${booking.carType ? `<p><strong>Car Type:</strong> ${booking.carType}</p>` : ''}
-        <p><strong>Total Price:</strong> ₱${booking.price}</p>
-        <p><strong>Date:</strong> ${booking.date}</p>
-        <p><strong>Time:</strong> ${booking.time}</p>
-        <p><strong>Payment Type:</strong> ${booking.paymentType}</p>
-        <p><strong>Payment Method:</strong> ${booking.paymentMethod}</p>
-    `;
-    currentBookingDiv.style.display = "block";
-}
-
 // Event listeners
 serviceSelect.addEventListener('change', function(){
-    oilOptions.style.display = this.value === 'Oil Change' ? 'block' : 'none';
+    if(this.value === 'Oil Change'){
+        oilOptions.style.display = 'block';
+        carTypeOther.style.display = 'none';
+    } else if(this.value){
+        oilOptions.style.display = 'none';
+        carTypeOther.style.display = 'block';
+    } else{
+        oilOptions.style.display = 'none';
+        carTypeOther.style.display = 'none';
+    }
     updatePrice();
 });
 oilType.addEventListener('change', updatePrice);
 fuelType.addEventListener('change', updatePrice);
-carType.addEventListener('change', updatePrice);
+carTypeOil.addEventListener('change', updatePrice);
+carTypeOther.addEventListener('change', updatePrice);
 
 paymentType.addEventListener('change', function() {
     paymentMethod.style.display = this.value === 'Online' ? 'block' : 'none';
     if(this.value !== 'Online') paymentMethod.value = '';
 });
 
-// Save booking to localStorage
-function saveBooking(booking) {
-    let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    bookings.push(booking);
-    localStorage.setItem('bookings', JSON.stringify(bookings));
-}
-
 // Booking submit
 bookingForm.addEventListener('submit', function(e){
     e.preventDefault();
-
     const name = document.getElementById('name').value;
     const mobile = document.getElementById('mobile').value;
     const service = serviceSelect.value;
@@ -250,130 +244,60 @@ bookingForm.addEventListener('submit', function(e){
     const time = document.getElementById('time').value;
     const type = paymentType.value;
     const method = paymentMethod.value || 'Cash';
-
-    if(!service){
-        alert("Please select a service.");
-        return;
+    let carType = service === 'Oil Change' ? carTypeOil.value : carTypeOther.value;
+    if(!service){ alert("Please select a service."); return; }
+    if(service === 'Oil Change' && (!oilType.value || !fuelType.value || !carTypeOil.value)){
+        alert('Please complete Oil Change options.'); return;
     }
+    if(service !== 'Oil Change' && !carTypeOther.value){ alert('Please select your car type.'); return; }
 
     let price = 0;
     let details = '';
-
     if(service === 'Oil Change'){
-        if(!oilType.value || !fuelType.value || !carType.value){
-            alert('Please complete Oil Change options.');
-            return;
-        }
-        price = oilPrices[oilType.value][fuelType.value][carType.value];
-        details = `
-            <p><strong>Oil Type:</strong> ${oilType.value}</p>
-            <p><strong>Fuel Type:</strong> ${fuelType.value}</p>
-            <p><strong>Car Type:</strong> ${carType.value}</p>
-        `;
+        price = servicePrices["Oil Change"][oilType.value][fuelType.value][carTypeOil.value];
+        details = `<p><strong>Oil Type:</strong> ${oilType.value}</p>
+                   <p><strong>Fuel Type:</strong> ${fuelType.value}</p>
+                   <p><strong>Car Type:</strong> ${carTypeOil.value}</p>`;
     } else {
-        price = otherPrices[service];
+        price = servicePrices[service][carTypeOther.value];
+        details = `<p><strong>Car Type:</strong> ${carTypeOther.value}</p>`;
     }
 
-    const bookingData = {
-        name, mobile, service,
-        oilType: oilType.value || null,
-        fuelType: fuelType.value || null,
-        carType: carType.value || null,
-        price, date, time,
-        paymentType: type,
-        paymentMethod: method,
-        timestamp: new Date().toISOString()
-    };
+    pendingReceipt = `<p><strong>Name:</strong> ${name}</p>
+                      <p><strong>Mobile:</strong> ${mobile}</p>
+                      <p><strong>Service:</strong> ${service}</p>
+                      ${details}
+                      <p><strong>Total Price:</strong> ₱${price}</p>
+                      <p><strong>Date:</strong> ${date}</p>
+                      <p><strong>Time:</strong> ${time}</p>
+                      <p><strong>Payment Type:</strong> ${type}</p>
+                      <p><strong>Payment Method:</strong> ${method}</p>
+                      <p style="color:#ff3c00; text-align:center; margin-top:10px;">Thank you for booking with Ry’s Auto Shop!</p>`;
 
-    saveBooking(bookingData);
-    showCurrentBooking(bookingData);
-
-    pendingReceipt = `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Mobile:</strong> ${mobile}</p>
-        <p><strong>Service:</strong> ${service}</p>
-        ${details}
-        <p><strong>Total Price:</strong> ₱${price}</p>
-        <p><strong>Date:</strong> ${date}</p>
-        <p><strong>Time:</strong> ${time}</p>
-        <p><strong>Payment Type:</strong> ${type}</p>
-        <p><strong>Payment Method:</strong> ${method}</p>
-        <p style="color:#ff3c00; text-align:center; margin-top:10px;">
-        Thank you for booking with Ry’s Auto Shop!
-        </p>
-    `;
-
-    if(type === "Online"){
-        openQRModal();
-    } else {
-        showReceipt();
-        alert('Booking saved successfully!');
-    }
-});
-
-// QR Modal functions
-function openQRModal(){
-    qrModal.style.display = "flex";
-    startCountdown();
-}
-
-function startCountdown(){
-    timeLeft = 600; // 10 minutes
-    updateCountdown();
-    paymentTimer = setInterval(()=>{
-        timeLeft--;
-        updateCountdown();
-        if(timeLeft <=0){
-            clearInterval(paymentTimer);
-            alert("Payment not received. Booking cancelled.");
-            closeQRModal();
-            resetForm();
-        }
-    },1000);
-}
-
-function updateCountdown(){
-    let minutes = Math.floor(timeLeft/60);
-    let seconds = timeLeft%60;
-    document.getElementById('countdown').innerText = "Time Remaining: "+minutes+":"+(seconds<10?"0":"")+seconds;
-}
-
-document.getElementById('paidBtn').addEventListener('click', function(){
-    clearInterval(paymentTimer);
-    closeQRModal();
-    showReceipt();
-    alert('Payment confirmed! Booking saved successfully.');
-});
-
-document.getElementById('cancelBtn').addEventListener('click', function(){
-    clearInterval(paymentTimer);
-    alert("Booking cancelled.");
-    closeQRModal();
-    resetForm();
-});
-
-function closeQRModal(){ qrModal.style.display = "none"; }
-
-function showReceipt(){
-    receiptContent.innerHTML = pendingReceipt;
-    receipt.style.display = "block";
-    resetForm();
-}
-
-function resetForm(){
-    bookingForm.reset();
-    oilOptions.style.display = "none";
-    paymentMethod.style.display = "none";
-    priceDisplay.innerHTML = "";
-}
-
-// Show last booking on page load
-window.addEventListener('load', () => {
+    // Save booking to localStorage
     const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
-    if(bookings.length > 0){
-        showCurrentBooking(bookings[bookings.length - 1]);
-    }
+    bookings.push({
+        name, mobile, service, oilType: oilType.value || '', fuelType: fuelType.value || '',
+        carType, price, date, time, paymentType: type, paymentMethod: method
+    });
+    localStorage.setItem('bookings', JSON.stringify(bookings));
+
+    if(type === "Online"){ openQRModal(); } else { showReceipt(); }
 });
+
+// QR Modal
+function openQRModal(){ qrModal.style.display = "flex"; startCountdown(); }
+function startCountdown(){
+    timeLeft = 600;
+    updateCountdown();
+    paymentTimer = setInterval(()=>{timeLeft--; updateCountdown(); if(timeLeft<=0){clearInterval(paymentTimer); alert("Payment not received. Booking cancelled."); closeQRModal(); resetForm();}},1000);
+}
+function updateCountdown(){ let m=Math.floor(timeLeft/60),s=timeLeft%60; document.getElementById('countdown').innerText = "Time Remaining: "+m+":"+(s<10?"0":"")+s; }
+document.getElementById('paidBtn').addEventListener('click', function(){clearInterval(paymentTimer); closeQRModal(); showReceipt();});
+document.getElementById('cancelBtn').addEventListener('click', function(){clearInterval(paymentTimer); alert("Booking cancelled."); closeQRModal(); resetForm();});
+function closeQRModal(){ qrModal.style.display = "none"; }
+function showReceipt(){ receiptContent.innerHTML = pendingReceipt; receipt.style.display = "block"; resetForm(); }
+function resetForm(){ bookingForm.reset(); oilOptions.style.display='none'; carTypeOther.style.display='none'; paymentMethod.style.display='none'; priceDisplay.innerHTML=''; }
 </script>
 
 </body>
