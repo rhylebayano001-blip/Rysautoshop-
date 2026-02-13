@@ -193,7 +193,7 @@ const servicePrices = {
 
 // Estimated completion times in hours (or days)
 const serviceDuration = {
-"Engine Repair":72, // hours = 3 days
+"Engine Repair":72,
 "Oil Change":2,
 "Brake Replacement":4,
 "Tire Replacement":2,
@@ -212,7 +212,7 @@ const receiptContent = document.getElementById('receiptContent');
 let pendingReceipt = '';
 let paymentTimer, timeLeft;
 
-// Update price
+// Update price dynamically
 function updatePrice(){
 let service = serviceSelect.value;
 let type = vehicleType.value;
