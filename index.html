@@ -4,121 +4,109 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ry’s Auto Shop</title>
-
 <style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, Helvetica, sans-serif;
-scroll-behavior:smooth;
-}
-
-body{
-background:linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
-url('https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1600&q=80');
-background-size:cover;
-background-attachment:fixed;
-background-position:center;
-color:white;
-}
-
-header{
-background:#000;
-padding:15px 40px;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-header h1{color:#ff3c00;}
-
-.booking{
-padding:60px 40px;
-background:#111;
-}
-
-form{
-max-width:600px;
-margin:auto;
-display:flex;
-flex-direction:column;
-}
-
-form input, form select{
-padding:10px;
-margin:8px 0;
-border-radius:5px;
-border:none;
-}
-
-.btn{
-padding:12px;
-background:#ff3c00;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-margin-top:10px;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;scroll-behavior:smooth;}
+body{background:linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://images.unsplash.com/photo-1493238792000-8113da705763?auto=format&fit=crop&w=1600&q=80');background-size:cover;background-attachment:fixed;background-position:center;color:white;}
+header{background:#000;padding:15px 40px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1000;}
+.logo{display:flex;align-items:center;}
+.logo-box{width:40px;height:40px;background:#ff3c00;margin-right:10px;position:relative;border-radius:6px;}
+.logo-box:before{content:"";position:absolute;width:20px;height:20px;border:3px solid white;border-radius:50%;top:8px;left:8px;}
+.logo h1{font-size:22px;color:#ff3c00;}
+nav a{color:white;text-decoration:none;margin-left:25px;font-weight:bold;}
+nav a:hover{color:#ff3c00;}
+.hero{height:90vh;display:flex;justify-content:center;align-items:center;text-align:center;animation:fadeIn 2s ease-in;}
+.hero h2{font-size:50px;}
+.hero p{margin:20px 0;font-size:18px;}
+.btn{padding:12px 25px;background:#ff3c00;color:white;border:none;border-radius:5px;cursor:pointer;}
 .btn:hover{background:#cc2f00;}
-
-#priceDisplay{
-margin-top:10px;
-color:#00ffcc;
-font-weight:bold;
+.booking{padding:60px 40px;background:#000;}
+form{max-width:600px;margin:auto;display:flex;flex-direction:column;}
+form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none;}
+#priceDisplay{margin-top:10px;font-weight:bold;color:#00ffcc;}
+#receipt{display:none;max-width:600px;margin:20px auto;background:#111;padding:20px;border-radius:10px;box-shadow:0 0 10px #ff3c00;}
+#qrModal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);justify-content:center;align-items:center;z-index:2000;}
+#qrModal div{background:#111;padding:30px;border-radius:10px;text-align:center;max-width:400px;}
+#qrModal img{margin:20px 0;}
+#countdown{color:#00ffcc;font-weight:bold;}
+.section h2{color:#ff3c00;margin-bottom:15px;}
+.section p{margin-bottom:20px;}
+/* Moving banner */
+.banner-container{width:100%;overflow:hidden;margin-bottom:40px;max-height:300px;}
+.banner-slide{display:flex;width:500%;animation:slide 20s infinite;}
+.banner-slide img{width:100%;object-fit:cover;}
+@keyframes slide{
+0%{transform:translateX(0%);}
+20%{transform:translateX(-20%);}
+40%{transform:translateX(-40%);}
+60%{transform:translateX(-60%);}
+80%{transform:translateX(-80%);}
+100%{transform:translateX(0);}
 }
-
-/* RECEIPT MODAL */
-#receiptModal{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.9);
-justify-content:center;
-align-items:center;
-z-index:2000;
-}
-
-.receipt-box{
-background:#111;
-padding:25px;
-border-radius:10px;
-width:420px;
-box-shadow:0 0 15px #ff3c00;
-}
-
-.receipt-buttons{
-margin-top:15px;
-display:flex;
-justify-content:space-between;
-}
-
-.exit-btn{background:#555;}
 </style>
 </head>
-
 <body>
 
 <header>
+<div class="logo">
+<div class="logo-box"></div>
 <h1>Ry’s Auto Shop</h1>
+</div>
+<nav>
+<a href="#home">Home</a>
+<a href="#services">Services</a>
+<a href="#about">About</a>
+<a href="#booking">Book</a>
+<a href="#contact">Contact</a>
+</nav>
 </header>
 
-<section class="booking">
-<h2 style="text-align:center;color:#ff3c00;">Book & Pay</h2>
+<section class="hero" id="home">
+<div>
+<h2>Professional Automotive Services</h2>
+<p>Fast • Reliable • Affordable in Cebu City</p>
+<a href="#booking"><button class="btn">Book Now</button></a>
+</div>
+</section>
 
+<!-- Moving Banner -->
+<div class="banner-container">
+<div class="banner-slide">
+<img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1600&q=80">
+<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80">
+<img src="https://images.unsplash.com/photo-1511919884226-9c41c99b1e9f?auto=format&fit=crop&w=1600&q=80">
+<img src="https://images.unsplash.com/photo-1605583236139-6b1b0429d0c3?auto=format&fit=crop&w=1600&q=80">
+<img src="https://images.unsplash.com/photo-1519183071298-a2962beadecd?auto=format&fit=crop&w=1600&q=80">
+</div>
+</div>
+
+<!-- Services Section -->
+<section class="section" id="services" style="padding:40px;text-align:center;">
+<h2>Our Services</h2>
+<p>We offer top-quality maintenance and repair services for all types of vehicles. Choose your service and your car type for accurate pricing.</p>
+<ul style="list-style:none;margin-top:20px;">
+<li>Engine Repair</li>
+<li>Oil Change</li>
+<li>Brake Replacement</li>
+<li>Tire Replacement</li>
+<li>Car Tune-Up</li>
+</ul>
+</section>
+
+<!-- About Section -->
+<section class="section" id="about" style="padding:40px;text-align:center;">
+<h2>About Us</h2>
+<p>Ry’s Auto Shop has been providing professional automotive services in Cebu City for years. Our expert technicians ensure your car runs smoothly and safely.</p>
+<img src="https://images.unsplash.com/photo-1526378722666-32dcabf7a1c6?auto=format&fit=crop&w=1600&q=80" alt="About us" style="width:100%;max-width:800px;margin-top:20px;border-radius:10px;">
+</section>
+
+<!-- Booking Section -->
+<section class="booking" id="booking">
+<h2 style="text-align:center;">Book an Appointment</h2>
 <form id="bookingForm">
-
-<input type="text" id="name" placeholder="Owner Full Name" required>
+<input type="text" id="name" placeholder="Full Name" required>
 <input type="tel" id="mobile" placeholder="Mobile Number" required>
-
-<input type="text" id="plate" placeholder="Car Plate Number" required>
-<input type="text" id="brand" placeholder="Vehicle Brand (e.g. Toyota)" required>
-<input type="text" id="model" placeholder="Vehicle Model (e.g. Vios)" required>
+<input type="text" id="plateNumber" placeholder="Car Plate Number" required>
+<input type="text" id="carBrand" placeholder="Car Brand & Model" required>
 
 <select id="service" required>
 <option value="">Select Service</option>
@@ -129,8 +117,9 @@ justify-content:space-between;
 <option value="Car Tune-Up">Car Tune-Up</option>
 </select>
 
-<select id="carType" required>
-<option value="">Select Car Type</option>
+<!-- Vehicle Type Selection -->
+<select id="vehicleType" required>
+<option value="">Select Vehicle Type</option>
 <option value="Sedan">Sedan</option>
 <option value="SUV">SUV</option>
 <option value="Pickup">Pickup</option>
@@ -138,37 +127,63 @@ justify-content:space-between;
 <option value="Truck">Truck</option>
 </select>
 
+<input type="date" id="date" required>
+<input type="time" id="time" required>
+
 <select id="paymentType" required>
 <option value="">Select Payment Type</option>
 <option value="Cash">Cash</option>
 <option value="Online">Online</option>
 </select>
 
-<input type="date" id="date" required>
-<input type="time" id="time" required>
+<select id="paymentMethod" style="display:none;">
+<option value="">Select Payment Method</option>
+<option value="Gcash">Gcash</option>
+<option value="Bank Transfer">Bank Transfer</option>
+</select>
 
 <div id="priceDisplay"></div>
-
-<button type="submit" class="btn">Confirm Booking</button>
+<button type="submit" class="btn">Submit Booking</button>
 </form>
 </section>
 
-<!-- RECEIPT -->
-<div id="receiptModal">
-<div class="receipt-box">
-<h3 style="color:#ff3c00;text-align:center;">Official Receipt</h3>
-<div id="receiptContent"></div>
-<div class="receipt-buttons">
-<button class="btn" onclick="window.print()">Print</button>
-<button class="btn exit-btn" onclick="closeReceipt()">Exit</button>
+<!-- Receipt -->
+<div id="receipt">
+<h3 style="color:#ff3c00;text-align:center;">Booking Receipt</h3>
+<div id="receiptContent" style="color:white;line-height:1.6;"></div>
+<button onclick="window.print()" class="btn" style="margin-top:15px;width:100%;">Print / Save PDF</button>
+</div>
+
+<!-- QR Payment Modal -->
+<div id="qrModal">
+<div>
+<h3 style="color:#ff3c00;">Scan to Pay</h3>
+<img src="https://i.ibb.co/k4F5hYb/gcash-qr.png" alt="QR Code" width="200">
+<p id="countdown"></p>
+<button id="paidBtn" class="btn" style="margin-top:10px;">I Have Paid</button>
+<button id="cancelBtn" class="btn" style="background:#555;margin-top:10px;">Cancel</button>
 </div>
 </div>
-</div>
+
+<!-- Contact & Map -->
+<section class="section" id="contact">
+<h2>Contact Us</h2>
+<p>📍 128 San Roque Street, Hipodromo, Cebu City</p>
+<p>📞 09682824032</p>
+</section>
+
+<section class="section" id="location" style="padding:40px;text-align:center;">
+<h2>Our Location</h2>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3858.789753268854!2d123.8859473153112!3d10.31219629260162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9981c4a65a9d5%3A0x9871ff6a5e20f0f5!2s128%20San%20Roque%20St%2C%20Hipodromo%2C%20Cebu%20City!5e0!3m2!1sen!2sus!4v1670000000000!5m2!1sen!2sus" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+
+<footer>
+<p>© 2026 Ry’s Auto Shop | All Rights Reserved</p>
+</footer>
 
 <script>
-
-// Prices per service per car type
-const servicePrices={
+// Prices per service & vehicle
+const servicePrices = {
 "Engine Repair":{"Sedan":5000,"SUV":6000,"Pickup":6500,"Van":7000,"Truck":8000},
 "Oil Change":{"Sedan":1500,"SUV":1800,"Pickup":2000,"Van":2200,"Truck":2500},
 "Brake Replacement":{"Sedan":3000,"SUV":3500,"Pickup":4000,"Van":4500,"Truck":5000},
@@ -176,103 +191,101 @@ const servicePrices={
 "Car Tune-Up":{"Sedan":2500,"SUV":3000,"Pickup":3500,"Van":4000,"Truck":4500}
 };
 
-// Estimated completion time
-const serviceDuration={
-"Engine Repair":"2-3 Days",
-"Oil Change":"1-2 Hours",
-"Brake Replacement":"3-4 Hours",
-"Tire Replacement":"1-2 Hours",
-"Car Tune-Up":"2-3 Hours"
+// Estimated completion times in hours (or days)
+const serviceDuration = {
+"Engine Repair":72, // hours = 3 days
+"Oil Change":2,
+"Brake Replacement":4,
+"Tire Replacement":2,
+"Car Tune-Up":3
 };
 
-const service=document.getElementById('service');
-const carType=document.getElementById('carType');
-const priceDisplay=document.getElementById('priceDisplay');
+const serviceSelect = document.getElementById('service');
+const vehicleType = document.getElementById('vehicleType');
+const priceDisplay = document.getElementById('priceDisplay');
+const paymentType = document.getElementById('paymentType');
+const paymentMethod = document.getElementById('paymentMethod');
+const bookingForm = document.getElementById('bookingForm');
+const qrModal = document.getElementById('qrModal');
+const receipt = document.getElementById('receipt');
+const receiptContent = document.getElementById('receiptContent');
+let pendingReceipt = '';
+let paymentTimer, timeLeft;
 
+// Update price
 function updatePrice(){
-if(service.value && carType.value){
-let price=servicePrices[service.value][carType.value];
-priceDisplay.innerHTML=`Total Price: ₱${price}`;
-}else{
-priceDisplay.innerHTML='';
+let service = serviceSelect.value;
+let type = vehicleType.value;
+if(service && type){
+let price = servicePrices[service][type];
+priceDisplay.innerHTML = `Total Price: ₱${price}`;
+}else priceDisplay.innerHTML = '';
 }
-}
+serviceSelect.addEventListener('change', updatePrice);
+vehicleType.addEventListener('change', updatePrice);
 
-service.addEventListener('change',updatePrice);
-carType.addEventListener('change',updatePrice);
-
-document.getElementById('bookingForm').addEventListener('submit',function(e){
-e.preventDefault();
-
-let name=name.value;
-let mobile=document.getElementById('mobile').value;
-let plate=document.getElementById('plate').value;
-let brand=document.getElementById('brand').value;
-let model=document.getElementById('model').value;
-let serviceType=service.value;
-let car=carType.value;
-let payment=document.getElementById('paymentType').value;
-let date=document.getElementById('date').value;
-let time=document.getElementById('time').value;
-
-let price=servicePrices[serviceType][car];
-let duration=serviceDuration[serviceType];
-
-// Automatic receipt number
-let receiptNumber="RY-"+Date.now();
-
-// Simulate online payment confirmation
-if(payment==="Online"){
-alert("Redirecting to Online Payment...");
-alert("Payment Successful!");
-}
-
-let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
-bookings.push({
-receiptNumber,
-name,
-mobile,
-plate,
-brand,
-model,
-service:serviceType,
-carType:car,
-price,
-duration,
-date,
-time,
-paymentType:payment,
-done:false
+// Show payment method for online
+paymentType.addEventListener('change', function(){
+paymentMethod.style.display = this.value==="Online"?"block":"none";
+if(this.value!=="Online") paymentMethod.value='';
 });
-localStorage.setItem('bookings',JSON.stringify(bookings));
 
-document.getElementById('receiptContent').innerHTML=`
-<p><strong>Receipt No:</strong> ${receiptNumber}</p>
+// Booking submission
+bookingForm.addEventListener('submit', function(e){
+e.preventDefault();
+const name = document.getElementById('name').value;
+const mobile = document.getElementById('mobile').value;
+const plate = document.getElementById('plateNumber').value;
+const brand = document.getElementById('carBrand').value;
+const service = serviceSelect.value;
+const type = vehicleType.value;
+const date = document.getElementById('date').value;
+const time = document.getElementById('time').value;
+const payType = paymentType.value;
+const method = paymentMethod.value || 'Cash';
+if(!service || !type){alert("Select service & vehicle type.");return;}
+const price = servicePrices[service][type];
+
+// Calculate estimated completion
+let dt = new Date(`${date}T${time}`);
+dt.setHours(dt.getHours()+serviceDuration[service]);
+let estDate = dt.toLocaleDateString();
+let estTime = dt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+// Prepare receipt
+pendingReceipt = `
 <p><strong>Name:</strong> ${name}</p>
 <p><strong>Mobile:</strong> ${mobile}</p>
-<p><strong>Plate No:</strong> ${plate}</p>
-<p><strong>Vehicle:</strong> ${brand} ${model}</p>
-<p><strong>Service:</strong> ${serviceType}</p>
-<p><strong>Car Type:</strong> ${car}</p>
-<p><strong>Estimated Completion:</strong> ${duration}</p>
-<p><strong>Total Paid:</strong> ₱${price}</p>
-<p><strong>Payment Type:</strong> ${payment}</p>
-<p><strong>Date:</strong> ${date} ${time}</p>
-<p style="color:#ff3c00;text-align:center;margin-top:10px;">
-Thank you for choosing Ry’s Auto Shop!
-</p>
+<p><strong>Plate Number:</strong> ${plate}</p>
+<p><strong>Car Brand & Model:</strong> ${brand}</p>
+<p><strong>Service:</strong> ${service}</p>
+<p><strong>Vehicle Type:</strong> ${type}</p>
+<p><strong>Total Price:</strong> ₱${price}</p>
+<p><strong>Date & Time:</strong> ${date} ${time}</p>
+<p><strong>Estimated Completion:</strong> ${estDate} ${estTime}</p>
+<p><strong>Payment Type:</strong> ${payType}</p>
+<p><strong>Payment Method:</strong> ${method}</p>
+<p style="color:#ff3c00;text-align:center;margin-top:10px;">Thank you for booking with Ry’s Auto Shop!</p>
 `;
 
-document.getElementById('receiptModal').style.display="flex";
-this.reset();
-priceDisplay.innerHTML='';
+// Save booking
+const bookings = JSON.parse(localStorage.getItem('bookings'))||[];
+bookings.push({name,mobile,plate,brand,service,type,price,date,time,payType,method,estDate,estTime});
+localStorage.setItem('bookings', JSON.stringify(bookings));
+
+// Show receipt
+if(payType==="Online"){openQRModal();}
+else showReceipt();
 });
 
-function closeReceipt(){
-document.getElementById('receiptModal').style.display="none";
-}
-
+// QR Modal
+function openQRModal(){qrModal.style.display="flex";startCountdown();}
+function startCountdown(){timeLeft=600;updateCountdown();paymentTimer=setInterval(()=>{timeLeft--;updateCountdown();if(timeLeft<=0){clearInterval(paymentTimer);alert("Payment not received. Booking cancelled.");closeQRModal();bookingForm.reset();}},1000);}
+function updateCountdown(){let m=Math.floor(timeLeft/60),s=timeLeft%60;document.getElementById('countdown').innerText=`Time Remaining: ${m}:${s<10?"0"+s:s}`;}
+document.getElementById('paidBtn').addEventListener('click', function(){clearInterval(paymentTimer);closeQRModal();showReceipt();});
+document.getElementById('cancelBtn').addEventListener('click', function(){clearInterval(paymentTimer);alert("Booking cancelled.");closeQRModal();bookingForm.reset();});
+function closeQRModal(){qrModal.style.display="none";}
+function showReceipt(){receiptContent.innerHTML=pendingReceipt;receipt.style.display="block";bookingForm.reset();priceDisplay.innerHTML='';paymentMethod.style.display='none';}
 </script>
-
 </body>
 </html>
