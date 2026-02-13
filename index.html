@@ -27,49 +27,11 @@ header{
 background:#000;
 padding:15px 40px;
 display:flex;
-justify-content:space-between;
-align-items:center;
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.logo{
-display:flex;
-align-items:center;
-}
-
-.logo-box{
-width:40px;
-height:40px;
-background:#ff3c00;
-margin-right:10px;
-border-radius:6px;
-}
-
-.logo h1{
-font-size:22px;
-color:#ff3c00;
-}
-
-.hero{
-height:90vh;
-display:flex;
 justify-content:center;
 align-items:center;
-text-align:center;
 }
 
-.btn{
-padding:12px 25px;
-background:#ff3c00;
-color:white;
-border:none;
-border-radius:5px;
-cursor:pointer;
-}
-
-.btn:hover{background:#cc2f00;}
+header h1{color:#ff3c00;}
 
 .booking{
 padding:60px 40px;
@@ -85,15 +47,27 @@ flex-direction:column;
 
 form input, form select{
 padding:10px;
-margin:10px 0;
+margin:8px 0;
 border-radius:5px;
 border:none;
 }
 
+.btn{
+padding:12px;
+background:#ff3c00;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.btn:hover{background:#cc2f00;}
+
 #priceDisplay{
 margin-top:10px;
-font-weight:bold;
 color:#00ffcc;
+font-weight:bold;
 }
 
 /* RECEIPT MODAL */
@@ -104,7 +78,7 @@ top:0;
 left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,0,0.9);
 justify-content:center;
 align-items:center;
 z-index:2000;
@@ -114,7 +88,7 @@ z-index:2000;
 background:#111;
 padding:25px;
 border-radius:10px;
-width:400px;
+width:420px;
 box-shadow:0 0 15px #ff3c00;
 }
 
@@ -125,37 +99,26 @@ justify-content:space-between;
 }
 
 .exit-btn{background:#555;}
-
-footer{
-text-align:center;
-padding:20px;
-background:#000;
-}
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">
-<div class="logo-box"></div>
 <h1>Ry’s Auto Shop</h1>
-</div>
 </header>
 
-<section class="hero">
-<div>
-<h2>Professional Automotive Services</h2>
-<a href="#booking"><button class="btn">Book Now</button></a>
-</div>
-</section>
-
-<section class="booking" id="booking">
-<h2 style="text-align:center;">Book an Appointment</h2>
+<section class="booking">
+<h2 style="text-align:center;color:#ff3c00;">Book & Pay</h2>
 
 <form id="bookingForm">
-<input type="text" id="name" placeholder="Full Name" required>
+
+<input type="text" id="name" placeholder="Owner Full Name" required>
 <input type="tel" id="mobile" placeholder="Mobile Number" required>
+
+<input type="text" id="plate" placeholder="Car Plate Number" required>
+<input type="text" id="brand" placeholder="Vehicle Brand (e.g. Toyota)" required>
+<input type="text" id="model" placeholder="Vehicle Model (e.g. Vios)" required>
 
 <select id="service" required>
 <option value="">Select Service</option>
@@ -166,9 +129,8 @@ background:#000;
 <option value="Car Tune-Up">Car Tune-Up</option>
 </select>
 
-<!-- CAR TYPE REQUIRED FOR ALL SERVICES -->
 <select id="carType" required>
-<option value="">Select Your Car Type</option>
+<option value="">Select Car Type</option>
 <option value="Sedan">Sedan</option>
 <option value="SUV">SUV</option>
 <option value="Pickup">Pickup</option>
@@ -176,18 +138,25 @@ background:#000;
 <option value="Truck">Truck</option>
 </select>
 
+<select id="paymentType" required>
+<option value="">Select Payment Type</option>
+<option value="Cash">Cash</option>
+<option value="Online">Online</option>
+</select>
+
 <input type="date" id="date" required>
 <input type="time" id="time" required>
 
 <div id="priceDisplay"></div>
-<button type="submit" class="btn">Pay Cash & Book</button>
+
+<button type="submit" class="btn">Confirm Booking</button>
 </form>
 </section>
 
 <!-- RECEIPT -->
 <div id="receiptModal">
 <div class="receipt-box">
-<h3 style="color:#ff3c00;text-align:center;">Payment Receipt</h3>
+<h3 style="color:#ff3c00;text-align:center;">Official Receipt</h3>
 <div id="receiptContent"></div>
 <div class="receipt-buttons">
 <button class="btn" onclick="window.print()">Print</button>
@@ -196,19 +165,24 @@ background:#000;
 </div>
 </div>
 
-<footer>
-<p>© 2026 Ry’s Auto Shop | All Rights Reserved</p>
-</footer>
-
 <script>
 
 // Prices per service per car type
-const servicePrices = {
+const servicePrices={
 "Engine Repair":{"Sedan":5000,"SUV":6000,"Pickup":6500,"Van":7000,"Truck":8000},
 "Oil Change":{"Sedan":1500,"SUV":1800,"Pickup":2000,"Van":2200,"Truck":2500},
 "Brake Replacement":{"Sedan":3000,"SUV":3500,"Pickup":4000,"Van":4500,"Truck":5000},
 "Tire Replacement":{"Sedan":4000,"SUV":4500,"Pickup":5000,"Van":5500,"Truck":6000},
 "Car Tune-Up":{"Sedan":2500,"SUV":3000,"Pickup":3500,"Van":4000,"Truck":4500}
+};
+
+// Estimated completion time
+const serviceDuration={
+"Engine Repair":"2-3 Days",
+"Oil Change":"1-2 Hours",
+"Brake Replacement":"3-4 Hours",
+"Tire Replacement":"1-2 Hours",
+"Car Tune-Up":"2-3 Hours"
 };
 
 const service=document.getElementById('service');
@@ -230,35 +204,60 @@ carType.addEventListener('change',updatePrice);
 document.getElementById('bookingForm').addEventListener('submit',function(e){
 e.preventDefault();
 
-let name=document.getElementById('name').value;
+let name=name.value;
 let mobile=document.getElementById('mobile').value;
+let plate=document.getElementById('plate').value;
+let brand=document.getElementById('brand').value;
+let model=document.getElementById('model').value;
 let serviceType=service.value;
 let car=carType.value;
+let payment=document.getElementById('paymentType').value;
 let date=document.getElementById('date').value;
 let time=document.getElementById('time').value;
-let price=servicePrices[serviceType][car];
 
-let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+let price=servicePrices[serviceType][car];
+let duration=serviceDuration[serviceType];
+
+// Automatic receipt number
+let receiptNumber="RY-"+Date.now();
+
+// Simulate online payment confirmation
+if(payment==="Online"){
+alert("Redirecting to Online Payment...");
+alert("Payment Successful!");
+}
+
+let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
 bookings.push({
+receiptNumber,
 name,
 mobile,
+plate,
+brand,
+model,
 service:serviceType,
 carType:car,
 price,
+duration,
 date,
 time,
-paymentType:"Cash",
+paymentType:payment,
 done:false
 });
-localStorage.setItem('bookings', JSON.stringify(bookings));
+localStorage.setItem('bookings',JSON.stringify(bookings));
 
 document.getElementById('receiptContent').innerHTML=`
+<p><strong>Receipt No:</strong> ${receiptNumber}</p>
 <p><strong>Name:</strong> ${name}</p>
+<p><strong>Mobile:</strong> ${mobile}</p>
+<p><strong>Plate No:</strong> ${plate}</p>
+<p><strong>Vehicle:</strong> ${brand} ${model}</p>
 <p><strong>Service:</strong> ${serviceType}</p>
 <p><strong>Car Type:</strong> ${car}</p>
+<p><strong>Estimated Completion:</strong> ${duration}</p>
 <p><strong>Total Paid:</strong> ₱${price}</p>
-<p><strong>Date:</strong> ${date}</p>
-<p><strong>Time:</strong> ${time}</p>
+<p><strong>Payment Type:</strong> ${payment}</p>
+<p><strong>Date:</strong> ${date} ${time}</p>
 <p style="color:#ff3c00;text-align:center;margin-top:10px;">
 Thank you for choosing Ry’s Auto Shop!
 </p>
