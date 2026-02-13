@@ -30,18 +30,9 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 #countdown{color:#00ffcc;font-weight:bold;}
 .section h2{color:#ff3c00;margin-bottom:15px;}
 .section p{margin-bottom:20px;}
-/* Moving banner */
-.banner-container{width:100%;overflow:hidden;margin-bottom:40px;max-height:300px;}
-.banner-slide{display:flex;width:500%;animation:slide 20s infinite;}
-.banner-slide img{width:100%;object-fit:cover;}
-@keyframes slide{
-0%{transform:translateX(0%);}
-20%{transform:translateX(-20%);}
-40%{transform:translateX(-40%);}
-60%{transform:translateX(-60%);}
-80%{transform:translateX(-80%);}
-100%{transform:translateX(0);}
-}
+.advertisement{max-width:1000px;margin:20px auto;overflow:hidden;border-radius:10px;position:relative;}
+.advertisement img{width:100%;display:none;}
+.advertisement img.active{display:block;}
 </style>
 </head>
 <body>
@@ -60,53 +51,40 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 </nav>
 </header>
 
+<!-- HERO -->
 <section class="hero" id="home">
 <div>
 <h2>Professional Automotive Services</h2>
-<p>Fast • Reliable • Affordable in Cebu City</p>
+<p>Quality repair and maintenance in Cebu City</p>
 <a href="#booking"><button class="btn">Book Now</button></a>
 </div>
 </section>
 
-<!-- Moving Banner -->
-<div class="banner-container">
-<div class="banner-slide">
-<img src="https://images.unsplash.com/photo-1549924231-f129b911e442?auto=format&fit=crop&w=1600&q=80">
-<img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=80">
-<img src="https://images.unsplash.com/photo-1511919884226-9c41c99b1e9f?auto=format&fit=crop&w=1600&q=80">
-<img src="https://images.unsplash.com/photo-1605583236139-6b1b0429d0c3?auto=format&fit=crop&w=1600&q=80">
-<img src="https://images.unsplash.com/photo-1519183071298-a2962beadecd?auto=format&fit=crop&w=1600&q=80">
-</div>
+<!-- Moving Advertisement -->
+<div class="advertisement">
+<img src="https://images.unsplash.com/photo-1597001318671-9d90d152899e?auto=format&fit=crop&w=1200&q=80" class="active" alt="Promo 1">
+<img src="https://images.unsplash.com/photo-1571607383025-4fc9c31ee688?auto=format&fit=crop&w=1200&q=80" alt="Promo 2">
+<img src="https://images.unsplash.com/photo-1609944402960-62e4c42f9f12?auto=format&fit=crop&w=1200&q=80" alt="Promo 3">
 </div>
 
 <!-- Services Section -->
-<section class="section" id="services" style="padding:40px;text-align:center;">
+<section class="section" id="services">
 <h2>Our Services</h2>
-<p>We offer top-quality maintenance and repair services for all types of vehicles. Choose your service and your car type for accurate pricing.</p>
-<ul style="list-style:none;margin-top:20px;">
-<li>Engine Repair</li>
-<li>Oil Change</li>
-<li>Brake Replacement</li>
-<li>Tire Replacement</li>
-<li>Car Tune-Up</li>
-</ul>
+<p>We offer Engine Repair, Oil Change, Brake Replacement, Tire Replacement, and Car Tune-Up. Choose your vehicle type for accurate pricing!</p>
 </section>
 
 <!-- About Section -->
-<section class="section" id="about" style="padding:40px;text-align:center;">
-<h2>About Us</h2>
-<p>Ry’s Auto Shop has been providing professional automotive services in Cebu City for years. Our expert technicians ensure your car runs smoothly and safely.</p>
-<img src="https://images.unsplash.com/photo-1526378722666-32dcabf7a1c6?auto=format&fit=crop&w=1600&q=80" alt="About us" style="width:100%;max-width:800px;margin-top:20px;border-radius:10px;">
+<section class="section" id="about">
+<h2>About Ry’s Auto Shop</h2>
+<p>We provide fast, reliable, and affordable automotive repair services in Cebu City. Our skilled technicians ensure your car is ready on time and in perfect condition!</p>
 </section>
 
-<!-- Booking Section -->
+<!-- BOOKING -->
 <section class="booking" id="booking">
 <h2 style="text-align:center;">Book an Appointment</h2>
 <form id="bookingForm">
 <input type="text" id="name" placeholder="Full Name" required>
 <input type="tel" id="mobile" placeholder="Mobile Number" required>
-<input type="text" id="plateNumber" placeholder="Car Plate Number" required>
-<input type="text" id="carBrand" placeholder="Car Brand & Model" required>
 
 <select id="service" required>
 <option value="">Select Service</option>
@@ -117,8 +95,8 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 <option value="Car Tune-Up">Car Tune-Up</option>
 </select>
 
-<!-- Vehicle Type Selection -->
-<select id="vehicleType" required>
+<!-- Car type selection for all services -->
+<select id="carType" required>
 <option value="">Select Vehicle Type</option>
 <option value="Sedan">Sedan</option>
 <option value="SUV">SUV</option>
@@ -136,8 +114,8 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 <option value="Online">Online</option>
 </select>
 
-<select id="paymentMethod" style="display:none;">
-<option value="">Select Payment Method</option>
+<select id="paymentMethod" style="display:none;" required>
+<option value="">Select Online Payment</option>
 <option value="Gcash">Gcash</option>
 <option value="Bank Transfer">Bank Transfer</option>
 </select>
@@ -151,30 +129,32 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 <div id="receipt">
 <h3 style="color:#ff3c00;text-align:center;">Booking Receipt</h3>
 <div id="receiptContent" style="color:white;line-height:1.6;"></div>
-<button onclick="window.print()" class="btn" style="margin-top:15px;width:100%;">Print / Save PDF</button>
+<button onclick="window.print()" class="btn" style="margin-top:15px;width:48%; margin-right:4%;">Print / Save PDF</button>
+<button onclick="closeReceipt()" class="btn" style="margin-top:15px;width:48%;">Exit</button>
 </div>
 
-<!-- QR Payment Modal -->
+<!-- QR Modal -->
 <div id="qrModal">
 <div>
 <h3 style="color:#ff3c00;">Scan to Pay</h3>
-<img src="https://i.ibb.co/k4F5hYb/gcash-qr.png" alt="QR Code" width="200">
+<img src="images/gcash-qr.png" alt="QR Code" width="200">
 <p id="countdown"></p>
 <button id="paidBtn" class="btn" style="margin-top:10px;">I Have Paid</button>
-<button id="cancelBtn" class="btn" style="background:#555;margin-top:10px;">Cancel</button>
+<button id="cancelBtn" class="btn" style="background:#555; margin-top:10px;">Cancel</button>
 </div>
 </div>
 
-<!-- Contact & Map -->
+<!-- Contact -->
 <section class="section" id="contact">
 <h2>Contact Us</h2>
 <p>📍 128 San Roque Street, Hipodromo, Cebu City</p>
 <p>📞 09682824032</p>
 </section>
 
-<section class="section" id="location" style="padding:40px;text-align:center;">
+<!-- Map Section -->
+<section class="section" id="location" style="padding:40px; text-align:center;">
 <h2>Our Location</h2>
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3858.789753268854!2d123.8859473153112!3d10.31219629260162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a9981c4a65a9d5%3A0x9871ff6a5e20f0f5!2s128%20San%20Roque%20St%2C%20Hipodromo%2C%20Cebu%20City!5e0!3m2!1sen!2sus!4v1670000000000!5m2!1sen!2sus" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<iframe src="https://www.google.com/maps?q=128+San+Roque+Street,+Hipodromo,+Cebu+City&output=embed" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
 </section>
 
 <footer>
@@ -182,7 +162,7 @@ form input, form select{padding:10px;margin:10px 0;border-radius:5px;border:none
 </footer>
 
 <script>
-// Prices per service & vehicle
+// Prices per service and vehicle type
 const servicePrices = {
 "Engine Repair":{"Sedan":5000,"SUV":6000,"Pickup":6500,"Van":7000,"Truck":8000},
 "Oil Change":{"Sedan":1500,"SUV":1800,"Pickup":2000,"Van":2200,"Truck":2500},
@@ -191,101 +171,111 @@ const servicePrices = {
 "Car Tune-Up":{"Sedan":2500,"SUV":3000,"Pickup":3500,"Van":4000,"Truck":4500}
 };
 
-// Estimated completion times in hours (or days)
-const serviceDuration = {
-"Engine Repair":72,
+// Estimated completion (hours or days)
+const completionTimes = {
+"Engine Repair":3*24, // hours
 "Oil Change":2,
 "Brake Replacement":4,
 "Tire Replacement":2,
 "Car Tune-Up":3
 };
 
-const serviceSelect = document.getElementById('service');
-const vehicleType = document.getElementById('vehicleType');
-const priceDisplay = document.getElementById('priceDisplay');
-const paymentType = document.getElementById('paymentType');
-const paymentMethod = document.getElementById('paymentMethod');
-const bookingForm = document.getElementById('bookingForm');
-const qrModal = document.getElementById('qrModal');
-const receipt = document.getElementById('receipt');
-const receiptContent = document.getElementById('receiptContent');
-let pendingReceipt = '';
-let paymentTimer, timeLeft;
+const serviceSelect=document.getElementById('service');
+const carType=document.getElementById('carType');
+const priceDisplay=document.getElementById('priceDisplay');
+const paymentType=document.getElementById('paymentType');
+const paymentMethod=document.getElementById('paymentMethod');
+const bookingForm=document.getElementById('bookingForm');
+const qrModal=document.getElementById('qrModal');
+const receipt=document.getElementById('receipt');
+const receiptContent=document.getElementById('receiptContent');
+let paymentTimer;
+let timeLeft;
+let pendingReceipt='';
 
-// Update price dynamically
+// Advertisement slider
+const ads=document.querySelectorAll('.advertisement img');
+let currentAd=0;
+setInterval(()=>{
+ads[currentAd].classList.remove('active');
+currentAd=(currentAd+1)%ads.length;
+ads[currentAd].classList.add('active');
+},4000);
+
+// Update price
 function updatePrice(){
-let service = serviceSelect.value;
-let type = vehicleType.value;
+let service=serviceSelect.value;
+let type=carType.value;
 if(service && type){
-let price = servicePrices[service][type];
-priceDisplay.innerHTML = `Total Price: ₱${price}`;
-}else priceDisplay.innerHTML = '';
+priceDisplay.innerHTML=`Total Price: ₱${servicePrices[service][type]}`;
+}else{priceDisplay.innerHTML='';}
 }
-serviceSelect.addEventListener('change', updatePrice);
-vehicleType.addEventListener('change', updatePrice);
+serviceSelect.addEventListener('change',updatePrice);
+carType.addEventListener('change',updatePrice);
 
-// Show payment method for online
-paymentType.addEventListener('change', function(){
-paymentMethod.style.display = this.value==="Online"?"block":"none";
-if(this.value!=="Online") paymentMethod.value='';
+// Payment type toggle
+paymentType.addEventListener('change',function(){
+paymentMethod.style.display=this.value==='Online'?'block':'none';
+if(this.value!=='Online') paymentMethod.value='';
 });
 
-// Booking submission
-bookingForm.addEventListener('submit', function(e){
+// Booking submit
+bookingForm.addEventListener('submit',function(e){
 e.preventDefault();
-const name = document.getElementById('name').value;
-const mobile = document.getElementById('mobile').value;
-const plate = document.getElementById('plateNumber').value;
-const brand = document.getElementById('carBrand').value;
-const service = serviceSelect.value;
-const type = vehicleType.value;
-const date = document.getElementById('date').value;
-const time = document.getElementById('time').value;
-const payType = paymentType.value;
-const method = paymentMethod.value || 'Cash';
-if(!service || !type){alert("Select service & vehicle type.");return;}
-const price = servicePrices[service][type];
+const name=document.getElementById('name').value;
+const mobile=document.getElementById('mobile').value;
+const service=serviceSelect.value;
+const type=carType.value;
+const date=document.getElementById('date').value;
+const time=document.getElementById('time').value;
+const payType=paymentType.value;
+const method=paymentMethod.value||'Cash';
 
-// Calculate estimated completion
-let dt = new Date(`${date}T${time}`);
-dt.setHours(dt.getHours()+serviceDuration[service]);
-let estDate = dt.toLocaleDateString();
-let estTime = dt.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+if(!service || !type){alert('Please select service and vehicle type.'); return;}
+let price=servicePrices[service][type];
 
-// Prepare receipt
-pendingReceipt = `
-<p><strong>Name:</strong> ${name}</p>
+// Calculate estimated completion datetime
+let startDate=new Date(date+'T'+time);
+let finishHours=completionTimes[service];
+let finishDate=new Date(startDate.getTime() + finishHours*60*60*1000);
+let finishDateStr=finishDate.toLocaleString();
+
+pendingReceipt=`<p><strong>Name:</strong> ${name}</p>
 <p><strong>Mobile:</strong> ${mobile}</p>
-<p><strong>Plate Number:</strong> ${plate}</p>
-<p><strong>Car Brand & Model:</strong> ${brand}</p>
 <p><strong>Service:</strong> ${service}</p>
 <p><strong>Vehicle Type:</strong> ${type}</p>
 <p><strong>Total Price:</strong> ₱${price}</p>
-<p><strong>Date & Time:</strong> ${date} ${time}</p>
-<p><strong>Estimated Completion:</strong> ${estDate} ${estTime}</p>
+<p><strong>Booking Date:</strong> ${date} ${time}</p>
+<p><strong>Estimated Completion:</strong> ${finishDateStr}</p>
 <p><strong>Payment Type:</strong> ${payType}</p>
 <p><strong>Payment Method:</strong> ${method}</p>
-<p style="color:#ff3c00;text-align:center;margin-top:10px;">Thank you for booking with Ry’s Auto Shop!</p>
-`;
+<p style="color:#ff3c00;text-align:center;margin-top:10px;">Thank you for booking with Ry’s Auto Shop!</p>`;
 
-// Save booking
-const bookings = JSON.parse(localStorage.getItem('bookings'))||[];
-bookings.push({name,mobile,plate,brand,service,type,price,date,time,payType,method,estDate,estTime});
-localStorage.setItem('bookings', JSON.stringify(bookings));
+// Save booking to localStorage
+let bookings=JSON.parse(localStorage.getItem('bookings'))||[];
+bookings.push({name,mobile,service,type,price,date,time,payType,method,estimated:finishDateStr});
+localStorage.setItem('bookings',JSON.stringify(bookings));
 
-// Show receipt
-if(payType==="Online"){openQRModal();}
-else showReceipt();
+if(payType==='Online'){openQRModal();}
+else{showReceipt();}
 });
 
 // QR Modal
-function openQRModal(){qrModal.style.display="flex";startCountdown();}
-function startCountdown(){timeLeft=600;updateCountdown();paymentTimer=setInterval(()=>{timeLeft--;updateCountdown();if(timeLeft<=0){clearInterval(paymentTimer);alert("Payment not received. Booking cancelled.");closeQRModal();bookingForm.reset();}},1000);}
-function updateCountdown(){let m=Math.floor(timeLeft/60),s=timeLeft%60;document.getElementById('countdown').innerText=`Time Remaining: ${m}:${s<10?"0"+s:s}`;}
-document.getElementById('paidBtn').addEventListener('click', function(){clearInterval(paymentTimer);closeQRModal();showReceipt();});
-document.getElementById('cancelBtn').addEventListener('click', function(){clearInterval(paymentTimer);alert("Booking cancelled.");closeQRModal();bookingForm.reset();});
-function closeQRModal(){qrModal.style.display="none";}
-function showReceipt(){receiptContent.innerHTML=pendingReceipt;receipt.style.display="block";bookingForm.reset();priceDisplay.innerHTML='';paymentMethod.style.display='none';}
+function openQRModal(){qrModal.style.display='flex';startCountdown();}
+function startCountdown(){timeLeft=600;updateCountdown();paymentTimer=setInterval(()=>{
+timeLeft--;updateCountdown();
+if(timeLeft<=0){clearInterval(paymentTimer);alert("Payment not received. Booking cancelled.");closeQRModal();resetForm();}},1000);}
+function updateCountdown(){let m=Math.floor(timeLeft/60),s=timeLeft%60;document.getElementById('countdown').innerText="Time Remaining: "+m+":"+(s<10?"0":"")+s;}
+document.getElementById('paidBtn').addEventListener('click',function(){clearInterval(paymentTimer);closeQRModal();showReceipt();});
+document.getElementById('cancelBtn').addEventListener('click',function(){clearInterval(paymentTimer);alert("Booking cancelled.");closeQRModal();resetForm();});
+function closeQRModal(){qrModal.style.display='none';}
+
+// Receipt
+function showReceipt(){receiptContent.innerHTML=pendingReceipt;receipt.style.display='block';resetForm();}
+function closeReceipt(){receipt.style.display='none';}
+
+// Reset
+function resetForm(){bookingForm.reset();paymentMethod.style.display='none';priceDisplay.innerHTML='';}
 </script>
 </body>
 </html>
